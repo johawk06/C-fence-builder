@@ -1,4 +1,5 @@
 # C++-fence-builder
 
-This was a capstone project for my first programming course Computer Science 1. It is a culmination of the subjects learned in my entroductory C++ course. 
+This isn't your average school project! This C++ program is a fence-tastic culmination of everything I learned in my Computer Science 1 course.
+Design and calculate the perfect fence for your virtual property, complete with gates, posts, and concrete. 
 
