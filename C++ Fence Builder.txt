@@ -1,0 +1,106 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+ 
+
+int main(){
+    //Declare variables
+    string name, line;
+    int area, walkGate, driveGate, topRail, concrete, post, fabricHeight, count;
+    double quote, fence_height;
+    char userChoice;
+     //Array of different fence heights
+        double arr_height [] = {99.99, 109.99, 129.99}; 
+
+    count = 0;
+
+    //Ask for retrive or add new customer
+    cout<<"Do you want to retrieve(r) customer data, or add new(a)"<<endl;
+    cin>>userChoice;
+    if (userChoice == 'a'){
+        //Get customer name
+        cout<<"Enter customer name: ";
+         cin>>name;
+
+         //Get customer fence parameters 
+        cout<<"Please enter linear feet of fence line: ";
+        cin>>area; //This is saying how much actual fence that they would like around their property
+        cout<<"Enter desired fence height (input 4, 5, or 6): ";
+        cin>>fabricHeight; 
+        fence_height = 0;
+
+// control if-else statement
+    if (fabricHeight == 4){
+        fence_height = arr_height[0];
+    } else if (fabricHeight == 5){
+        fence_height == arr_height[1];
+    } else if (fabricHeight == 6){
+        fence_height == arr_height[2];
+    }
+
+
+    cout<<"Please enter desired number of walkthrough gates: ";
+    cin>>walkGate; 
+    cout<<"Please enter the desired number of drivethrough gates: ";
+    cin>>driveGate;
+    topRail = area / 18; //Top rails are needed every 18 feet
+    post = area / 10; //posts are needed every 10 feet
+    concrete = post * 1.5; //1.5 bags of concrete per post
+    quote = (((area % 50) + 1)* fence_height) + (walkGate *87.94 ) + (driveGate *159.99 )
+    + (topRail * 19.99) + (post * 19.97) + (concrete * 5.99); //this calculates the total cost
+    cout<<"Price quote: "<<quote<<" "<<endl;
+    // outputting the Material list to the console output
+    cout<<"Materials list: "<<endl<<"Rolls of fence: "<<area/50<<endl<<
+    "Walkthrough gates: "<<walkGate<<endl<<"Drivethrough gates: "<<driveGate
+    <<endl<<"Number of posts: "<<post<<endl<<"Bags of concrete: "<<concrete<<
+    endl;
+    
+    //Save customer info to file
+    ofstream file("customer.txt");
+    if (!file.is_open())
+    {
+        cout<< "Unable to open file customer.txt"<<endl;
+        return 0;
+    }
+    file<<"Name: "<<name<<",Quote: "<<quote;
+    file <<",Rolls of fence: "<<area/50<<",Walkthrough gates: "<<walkGate<<",Drivethrough gates: "<<driveGate<<",Number of posts: "<<post<<",Bags of concrete: "<<
+    concrete<<endl;
+    file.close();
+    
+    } else if(userChoice == 'r'){
+        cout<<"Enter customer name"<<endl;
+        cin>>name;
+
+        ifstream inputfile;
+        inputfile.open("customer.txt");
+        if (inputfile.is_open()){
+            bool found= false;
+            while(getline(inputfile, line)){
+                
+                cout<<line.substr(6, line.find(',')-6)<<endl;
+                cout<<name;
+                if (line.substr(6, line.find(',')-6).compare(name)==0){
+                    cout<<" Previous quote found"<<endl;
+                    cout<<line;
+                    found= true;
+                    break;
+                }
+            
+                count += 1;
+           
+            }
+            if (found==false){
+                cout<<" Unable to find customer "<<name<<endl;
+        
+            }
+        }
+        else 
+        {
+            cout<< "Unable to open file customer.txt"<<endl;
+            return 0;
+        }
+        inputfile.close();
+    }
+
+return 0; 
+}
